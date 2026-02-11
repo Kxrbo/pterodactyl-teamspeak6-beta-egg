@@ -1,0 +1,1 @@
+# pterodactyl-teamspeak6-beta-egg
