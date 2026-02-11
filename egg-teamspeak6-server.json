@@ -1,0 +1,82 @@
+{
+  "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+  "meta": {
+    "version": "PTDL_v2",
+    "update_url": null
+  },
+  "exported_at": "2026-02-11T13:00:00+00:00",
+  "name": "TeamSpeak 6 Server (Beta)",
+  "author": "kerbo@kerbo.tv",
+  "description": "TeamSpeak 6 Server (Beta) using the official Docker image. Requires a writable mount to /var/tsserver.",
+  "features": null,
+  "docker_images": {
+    "teamspeaksystems/teamspeak6-server:latest": "teamspeaksystems/teamspeak6-server:latest"
+  },
+  "file_denylist": [],
+  "startup": "./tsserver --default-voice-port={{SERVER_PORT}} --file-transfer-port={{FILE_TRANSFER_PORT}} --query-port={{QUERY_PORT}} --query-ssh-port={{QUERY_SSH}} --query-http-port={{QUERY_HTTP}}",
+  "config": {
+    "files": "{}",
+    "startup": "{\r\n    \"done\": \"ServerAdmin\"\r\n}",
+    "logs": "{\r\n    \"custom\": false,\r\n    \"location\": \"\"\r\n}",
+    "stop": "^C"
+  },
+  "scripts": {
+    "installation": {
+      "script": "#!/bin/ash\r\nset -e\r\n\r\necho \"TS6 runs from the official Docker image.\" \r\necho \"IMPORTANT: You must mount a writable volume to /var/tsserver (logs/data).\"",
+      "container": "ghcr.io/pterodactyl/installers:alpine",
+      "entrypoint": "ash"
+    }
+  },
+  "variables": [
+    {
+      "name": "TS6 License Acceptance",
+      "description": "Set to 'accept' to accept the license (required to start) or 'view' to print the license to console.",
+      "env_variable": "TSSERVER_LICENSE_ACCEPTED",
+      "default_value": "accept",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|in:accept,view",
+      "field_type": "text"
+    },
+    {
+      "name": "File Transfer Port",
+      "description": "TCP port for file transfers. Create an additional allocation for this port (default: 30033/tcp).",
+      "env_variable": "FILE_TRANSFER_PORT",
+      "default_value": "30033",
+      "user_viewable": true,
+      "user_editable": false,
+      "rules": "required|integer|between:1025,65535",
+      "field_type": "text"
+    },
+    {
+      "name": "Query Port (raw)",
+      "description": "TCP ServerQuery port (raw). Create an additional allocation if you want it (default: 10011/tcp).",
+      "env_variable": "QUERY_PORT",
+      "default_value": "10011",
+      "user_viewable": true,
+      "user_editable": false,
+      "rules": "required|integer|between:1025,65535",
+      "field_type": "text"
+    },
+    {
+      "name": "Query SSH Port",
+      "description": "TCP ServerQuery over SSH port. Additional allocation needed (default: 10022/tcp).",
+      "env_variable": "QUERY_SSH",
+      "default_value": "10022",
+      "user_viewable": true,
+      "user_editable": false,
+      "rules": "required|integer|between:1025,65535",
+      "field_type": "text"
+    },
+    {
+      "name": "Query HTTP Port",
+      "description": "TCP ServerQuery over HTTP port. Additional allocation needed (default: 10080/tcp).",
+      "env_variable": "QUERY_HTTP",
+      "default_value": "10080",
+      "user_viewable": true,
+      "user_editable": false,
+      "rules": "required|integer|between:1025,65535",
+      "field_type": "text"
+    }
+  ]
+}
